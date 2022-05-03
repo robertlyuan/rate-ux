@@ -1,0 +1,108 @@
+.restaurant {
+  display: flex;
+  min-width: 900px;
+  font-family: Arial, Helvetica, sans-serif;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(208, 158, 231);
+}
+
+.restaurant-info {
+  border: solid #CCC 1px;
+  border-radius: 3px;
+  margin-top: 12px;
+  width: 600px;
+  padding: 0 12px;
+  background-color: white;
+}
+
+.restaurant-name {
+  margin: 24px 0;
+  font-size: 32px;
+}
+
+.location-hours {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center
+}
+
+.location {
+  margin: 0 24px;
+}
+
+.hours {
+  margin: 0 24px;
+}
+
+.day {
+  margin-right: 8px;
+}
+
+.hour {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.tabs {
+  width: 600px;
+  padding: 0 12px;
+  background-color: white;
+  margin-top: 12px
+}
+
+.review {
+  margin: 12px 0;
+}
+
+.review-name {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 8px;
+}
+
+.rating {
+  padding-bottom: 8px;
+}
+
+.tab-list {
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.tab-list-active {
+  background-color: white;
+  border: solid #ccc;
+  border-width: 1px 1px 0 1px;
+}
+
+.add-review-button, .submit-button {
+  border: solid #CCC 1px;
+  border-radius: 3px;
+  width: 93px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.rating-input {
+  width: 30px;
+}
+
+.add-review .rating {
+  padding: 6px 0;
+}
+
+.review-input {
+  height: 120px;
+  width: 600px;
+}
