@@ -1,31 +1,36 @@
+.container {
+  height: inherit;
+}
+
 .restaurant {
   display: flex;
+  height: inherit;
   min-width: 900px;
   font-family: Arial, Helvetica, sans-serif;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(208, 158, 231);
+  padding: 12px;
 }
 
 .restaurant-info {
-  border: solid #CCC 1px;
-  border-radius: 3px;
-  margin-top: 12px;
-  width: 600px;
-  padding: 0 12px;
-  background-color: white;
+  height: 100%;
 }
 
 .restaurant-name {
-  margin: 24px 0;
+  margin: 24px 22px;
   font-size: 32px;
+  display: flex;
+}
+
+.status {
+  font-size: 12px;
+  padding-left: 12px;
+  font-weight: bold;
 }
 
 .location-hours {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center
 }
 
 .location {
@@ -46,25 +51,14 @@
   padding-bottom: 8px;
 }
 
-.tabs {
-  width: 600px;
-  padding: 0 12px;
-  background-color: white;
-  margin-top: 12px
-}
-
 .review {
   margin: 12px 0;
 }
 
 .review-name {
-  font-size: 20px;
-  font-weight: bold;
-  padding-bottom: 8px;
-}
-
-.rating {
-  padding-bottom: 8px;
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 12px;
 }
 
 .tab-list {
@@ -86,12 +80,8 @@
   border-width: 1px 1px 0 1px;
 }
 
-.add-review-button, .submit-button {
-  border: solid #CCC 1px;
-  border-radius: 3px;
-  width: 93px;
-  padding: 4px 12px;
-  cursor: pointer;
+.ui.positive.button.add-review-button {
+  margin-top: 12px;
 }
 
 .rating-input {

@@ -1,3 +1,6 @@
+import { Rating } from 'semantic-ui-react';
+
+
 function Review({review}) {
   /*
    *  review: {
@@ -12,9 +15,9 @@ function Review({review}) {
    */
   return (
     <div className='review'>
-      <div className='review-name'>{review.account.name}</div>
-      <div className='rating'>{`${review.rating}/5`}</div>
+      <Rating icon='star' rating={review.rating} maxRating={5} disabled={true}/>
       <div className='review-text'>{review.reviewText}</div>
+      <div className='review-name'>{`- ${review.account.name}`}</div>
     </div>
   );
 }

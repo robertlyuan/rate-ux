@@ -118,7 +118,13 @@ module.exports = function (webpackEnv) {
       },
       {
         loader: require.resolve('css-loader'),
-        options: cssOptions,
+        options: {
+          ...cssOptions,
+          url: {
+            // skip any data URLs of type image/svg+xml
+            filter: (url) => !(url.includes('charset=utf-8;;'))
+          }
+        },
       },
       {
         // Options for PostCSS as we reference these options twice

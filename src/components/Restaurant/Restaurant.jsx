@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RestaurantInfo from "./RestaurantInfo";
 import Review from './Review';
-import Tabs from '../Tabs/Tabs';
 import './Restaurant.css';
 import MenuItem from './MenuItem';
 import { v4 as uuid } from 'uuid';
+import { Tab, Button, Modal, Rating, Container } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
+import * as axios from 'axios';
 
 
 function Restaurant() {
@@ -51,6 +53,22 @@ function Restaurant() {
   const [itemInput, setItemInput] = useState('');
   const [itemRatingInput, setItemRatingInput] = useState('');
   const [items, setItems] = useState(initialItems);
+  const [restaurantInfo, setRestaurantInfo] = useState(null);
+  const { id } = useParams();
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await axios.get(`https://api.yelp.com/v3/businesses/${id}`, {
+        headers: {
+          Authorization: 'Bearer Nvcg9KS82yWjxlwVH9KxZskPJDL5CCuehtaPoko11AuiEpH0enLI7VCYCeEP76CiVg7HzMoyV8hKChHuYxBgbTEbHsOw2w9HJRQ86e4CQJs9fzw4XFv4yar6ORjLXnYx',
+        }
+      });
+
+      setRestaurantInfo(res.data);
+    }
+    fetchData();
+  }, [id]);
+
 
   const addReview = () => {
     const newReview = {
@@ -81,67 +99,72 @@ function Restaurant() {
     setItemRatingInput('');
   };
 
- return (
-   <div className='container'>
-    <div className='restaurant'>
-      <RestaurantInfo
-        info={{
-          name: 'Resto Raunt',
-          address: {
-            street1: '77 W Huron',
-            city: 'Chicago',
-            state: 'IL',
-            zipCode: '60654'
-          }
-        }}
-      />
-      <Tabs>
-        <div label='Reviews'>
-          <div
-            className='add-review-button'
-            onClick={() => setShowAddReview(true)}
-          >{'Add a review'}</div>
-          {
-            showAddReview && 
+  const panes = [
+    { menuItem: 'Reviews', render: () => (
+      <div label='Reviews'>
+        <Modal
+          onClose={() => setShowAddReview(false)}
+          onOpen={() => setShowAddReview(true)}
+          open={showAddReview}
+          trigger={<Button className='add-review-button' positive>{'Add a review'}</Button>}
+        >
+          <Modal.Header>
+            {'Write a Review'}
+          </Modal.Header>
+          <Modal.Content>
             <div className='add-review'>
               <div className='rating'>
-                {'Rating: '} <input
-                                className='rating-input'
-                                type='text'
-                                value={ratingInput}
-                                onChange={(event) => setRatingInput(event.target.value)}
-                            />
-                {' / 5'}
+              {'Rating: '}  <Rating
+                  icon='star'
+                  maxRating={5}
+                  onRate={(e, {rating}) => setRatingInput(rating)}
+                />
               </div>
               <textarea
                 className='review-input'
                 value={reviewInput}
                 onChange={event => setReviewInput(event.target.value)}
               />
-              <div
-                className='submit-button'
-                onClick={() => {
-                  addReview();
-                  setShowAddReview(false);
-                }}
-              >
-                {'Submit'}
-              </div>
             </div>
-          }
-          {
-            reviews.map(review => {
-              return <Review review={review} key={review.account.id}/>;
-            })
-          }
-        </div>
-        <div label='Menu'>
-          <div
-            className='add-review-button'
-            onClick={() => setShowAddItem(true)}
-          >{'Add a menu item'}</div>
-          {
-            showAddItem && 
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              onClick={() => setShowAddReview(false)}
+              color='black'
+            >
+              {'Cancel'}
+            </Button>
+            <Button
+              className='submit-button'
+              onClick={() => {
+                addReview();
+                setShowAddReview(false);
+              }}
+              positive
+            >
+              {'Submit'}
+            </Button>
+          </Modal.Actions>
+        </Modal>
+        {
+          reviews.map(review => {
+            return <Review review={review} key={review.account.id}/>;
+          })
+        }
+      </div>)
+    },
+    { menuItem: 'Menu', render: () => (
+      <div label='Menu'>
+        <Modal
+          onClose={() => setShowAddItem(false)}
+          onOpen={() => setShowAddItem(true)}
+          open={showAddItem}
+          trigger={<Button className='add-review-button' positive>{'Add a menu item'}</Button>}
+        >
+          <Modal.Header>
+            {'Add a Menu Item'}
+          </Modal.Header>
+          <Modal.Content>
             <div className='add-item'>
               <div className='item-name'>
                 {'Item Name'} <input
@@ -151,38 +174,64 @@ function Restaurant() {
                                 onChange={(event) => setItemNameInput(event.target.value)}
                             />
               </div>
-              <div className='rating'>
-                {'Rating: '} <input
-                                className='rating-input'
-                                type='text'
-                                value={itemRatingInput}
-                                onChange={(event) => setItemRatingInput(event.target.value)}
-                            />
-                {' / 5'}
-              </div>
+              {'Rating: '}  <Rating
+                  icon='star'
+                  maxRating={5}
+                  onRate={(e, {rating}) => setItemRatingInput(rating)}
+                />
               <textarea
                 className='review-input'
                 value={itemInput}
                 onChange={event => setItemInput(event.target.value)}
               />
-              <div
-                className='submit-button'
-                onClick={() => {
-                  addItem();
-                  setShowAddItem(false);
-                }}
-              >
-                {'Submit'}
-              </div>
             </div>
-          }
-          {
-            items.map(item => {
-              return <MenuItem item={item} key={item.id}/>;
-            })
-          }
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              onClick={() => setShowAddItem(false)}
+              color='black'
+            >
+              {'Cancel'}
+            </Button>
+            <Button
+              className='submit-button'
+              onClick={() => {
+                addItem();
+                setShowAddItem(false);
+              }}
+              positive
+            >
+              {'Submit'}
+            </Button>
+          </Modal.Actions>
+        </Modal>
+        {
+          items.map(item => {
+            return <MenuItem item={item} key={item.id}/>;
+          })
+        }
         </div>
-      </Tabs>
+    ) }
+  ];
+
+  console.log({
+    restaurantInfo
+  });
+
+  if (!restaurantInfo) {
+    return null;
+  }
+ return (
+   <div className='container'>
+    <div className='restaurant'>
+      <Container style={{width: '75%', backgroundColor: 'white', borderRadius: '5px', padding: '15px', marginBottom: '20px'}}>
+          <RestaurantInfo
+            info={restaurantInfo}
+          />
+      </Container>
+      <Container style={{width: '75%', backgroundColor: 'white', borderRadius: '5px', padding: '15px'}}>
+        <Tab panes={panes}/>
+      </Container>
     </div>
    </div>
  )
